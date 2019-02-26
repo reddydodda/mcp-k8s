@@ -13,47 +13,46 @@ classes:
 parameters:
   _param:
     deploy_nic: eth0
+    keepalived_k8s_apiserver_vip_address: ${_param:kubernetes_control_address}
+    keepalived_k8s_apiserver_vip_interface: ens3
+    keepalived_k8s_apiserver_vip_password: password
+    keepalived_vip_virtual_router_id: 69
     primary_first_nic: eth1
     primary_second_nic: eth2
-    keepalived_k8s_apiserver_vip_interface: ens3
-    keepalived_k8s_apiserver_vip_address: ${_param:kubernetes_control_address}
-    keepalived_k8s_apiserver_vip_password: password
   etcd:
     server:
+      setup:
+        calico:
+          key: /calico/ipam/v2/assignment/ipv4/block/${_param:calico_private_network}-${_param:calico_private_netmask}
+          value: '{"masquerade":true,"cidr":"${_param:calico_private_network}/${_param:calico_private_netmask}"}'
       source:
         engine: docker_hybrid
       ssl:
         enabled: true
-      setup:
-        calico:
-          # key: /calico/v1/ipam/v4/pool/${_param:calico_private_network}-${_param:calico_private_netmask}
-          key: /calico/ipam/v2/assignment/ipv4/block/${_param:calico_private_network}-${_param:calico_private_netmask}
-          value: '{"masquerade":true,"cidr":"${_param:calico_private_network}/${_param:calico_private_netmask}"}'
-          # if IP-in-IP is required
-          # value: '{"ipip":"tunl0","ipip_mode":"always","ipam":true,"disabled":false, "masquerade":true,"cidr":"${_param:calico_private_network}/${_param:calico_private_netmask}"}'
   kubernetes:
+    common:
+      addons:
+        coredns:
+          domain: ${_param:cluster_domain}
+          server: ${_param:kubernetes_internal_dns_address}
+        helm:
+          enabled: false
+        netchecker:
+          enabled: true
     master:
+      apiserver:
+        insecure_address: 0.0.0.0
       etcd:
         ssl:
           enabled: true
+      namespace:
+        netchecker:
+          enabled: true
       network:
-        enabled: true
         calico:
           etcd:
             ssl:
               enabled: true
           policy:
             enabled: false
-      namespace:
-        netchecker:
-          enabled: true
-
-    common:
-      addons:
-        netchecker:
-          enabled: true
-        helm:
-          enabled: false
-        coredns:
-          domain: ${_param:cluster_domain}
-          server: ${_param:kubernetes_internal_dns_address}
+        enabled: true

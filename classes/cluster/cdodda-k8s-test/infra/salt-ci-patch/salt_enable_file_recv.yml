@@ -1,0 +1,6 @@
+# Enable file_recv to collect logs from all nodes
+# via Salt master and them archive in job
+parameters:
+  salt:
+    master:
+      file_recv: true

@@ -1,7 +1,7 @@
 classes:
 - cluster.cdodda-k8s-test.kubernetes.common
-- cluster.cdodda-k8s-test.kubernetes.networking.virtual
 - cluster.cdodda-k8s-test.infra
+- cluster.cdodda-k8s-test.kubernetes.networking.compute
 parameters:
   _param:
     deploy_nic: eth0

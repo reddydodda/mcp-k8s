@@ -17,42 +17,43 @@ classes:
 - cluster.cdodda-k8s-test.infra.backup.client_common
 - cluster.cdodda-k8s-test.infra.networking.config
 - cluster.cdodda-k8s-test.infra.config.nodes
+- system.jenkins.client.job.validate
+- cluster.cdodda-k8s-test.infra.salt-ci-patch.salt_enable_file_recv
 parameters:
   _param:
-    salt_master_base_environment: prd
-    reclass_data_repository: "https://github.com/Mirantis/mk-lab-salt-model.git"
-    reclass_data_revision: master
-    reclass_config_master: ${_param:infra_config_deploy_address}
-    single_address: ${_param:infra_config_address}
     deploy_address: ${_param:infra_config_deploy_address}
-    linux_system_codename: xenial
-    salt_api_password_hash: "$6$sGnRlxGf$al5jMCetLP.vfI/fTl3Z0N7Za1aeiexL487jAtyRABVfT3NlwZxQGVhO7S1N8OwS/34VHYwZQA8lkXwKMN/GS1"
-    salt_master_host: ${_param:infra_config_deploy_address}
-    jenkins_git_url: 'git@cfg01:/home/repo'
+    http_proxy: ''
+    http_proxy_address: ''
+    http_proxy_port: ''
     jenkins_gerrit_url: ${_param:jenkins_git_url}
-    salt_api_password: hovno12345!
-    jenkins_salt_api_url: "http://${_param:salt_master_host}:6969"
+    jenkins_git_url: git@cfg01:/home/repo
     jenkins_pipeline_library_url: git@cfg01:/home/repo/mcp-ci/pipeline-library
-    http_proxy_address: ""
-    http_proxy_port: ""
-    http_proxy: ""
+    jenkins_salt_api_url: http://${_param:salt_master_host}:6969
+    linux_system_codename: xenial
+    reclass_config_master: ${_param:infra_config_deploy_address}
+    reclass_data_repository: https://github.com/Mirantis/mk-lab-salt-model.git
+    reclass_data_revision: master
+    salt_api_password: hovno12345!
+    salt_api_password_hash: $6$sGnRlxGf$al5jMCetLP.vfI/fTl3Z0N7Za1aeiexL487jAtyRABVfT3NlwZxQGVhO7S1N8OwS/34VHYwZQA8lkXwKMN/GS1
+    salt_master_base_environment: prd
+    salt_master_host: ${_param:infra_config_deploy_address}
+    single_address: ${_param:infra_config_address}
   jenkins:
     client:
       lib:
         pipeline-library:
-          url: ${_param:jenkins_pipeline_library_url}
           branch: ${_param:jenkins_pipelines_branch}
+          url: ${_param:jenkins_pipeline_library_url}
       master:
         host: ${_param:salt_master_host}
-        port: 8081
         password: r00tme
+        port: 8081
   salt:
     master:
+      backup: true
       command_timeout: 600
       user:
         deploy:
           permissions: ${_param:salt_master_api_permissions}
-      backup: true
     minion:
       backup: true
-
