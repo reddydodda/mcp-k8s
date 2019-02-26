@@ -1,0 +1,16 @@
+classes:
+- cluster.cdodda-k8s-test.kubernetes.control
+parameters:
+  _param:
+    deploy_address: 10.11.0.11
+    keepalived_vip_priority: 103
+    linux_system_codename: xenial
+    salt_master_host: 10.10.0.15
+    single_address: 10.11.0.11
+    tenant_address: 10.12.100.2
+  linux:
+    system:
+      name: ctl01
+      domain: cdodda-k8s-test.local
+      cluster: default
+      environment: prd
