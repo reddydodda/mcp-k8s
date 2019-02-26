@@ -1,0 +1,70 @@
+
+classes:
+- system.linux.system.repo.mcp.apt_mirantis.maas
+- system.maas.region.single
+- system.maas.region.boot_sources.maas_ephemeral_v3.bss_xenial
+- system.maas.region.boot_sources.maas_ephemeral_v3
+- cluster.cdodda-k8s-test.infra.maas_machines
+parameters:
+  _param:
+    maas_region_port: 5240
+    maas_name: ${_param:infra_config_hostname}
+    maas_gateway: 10.10.0.1
+  postgresql:
+    # If you are going to change postgresql data here, please adjust it in mcp-drivetrain-model as well
+    server:
+      enabled: true
+      version: 9.5
+      bind:
+        address: 127.0.0.1
+        port: 5432
+        protocol: tcp
+      clients:
+      - 127.0.0.1
+      database:
+        maasdb:
+          encoding: 'UTF8'
+          users:
+            - name: 'maas'
+              password: ${_param:maas_db_password}
+              host: 'localhost'
+              createdb: true
+              rights: 'all privileges'
+  maas:
+    region:
+      bind:
+        host: ${_param:deploy_address}
+        port: ${_param:maas_region_port}
+      maas_config:
+        maas_name: ${_param:maas_name}
+      subnets:
+        deploy_network:
+          name: deploy_network
+          cidr: 10.10.0.0/16
+          fabric: ${maas:region:fabrics:deploy_fabric:name}
+          gateway_ip: ${_param:maas_gateway}
+          ipranges:
+            1:
+              end: 10.10.255.254
+              start: 10.10.220.1
+              type: dynamic
+              subnet: ${maas:region:subnets:deploy_network:name}
+      fabrics:
+        deploy_fabric:
+          name: deploy_fabric
+          description: 'Fabric for deploy_network'
+          vlans:
+            0:
+              name: 'vlan 0'
+              description: "Deploy VLAN"
+              dhcp: True
+              # FXIME: after refactoring domain module, it should
+              # be fixed to exactly use FQDN, not only hostname
+              primary_rack: "${linux:network:hostname}"
+    cluster:
+      region:
+        host: ${_param:deploy_address}
+        port: ${_param:maas_region_port}
+      saltstack_repo_key: ${linux:system:repo:mcp_saltstack:key}
+      saltstack_repo_trusty: "deb [arch=amd64] ${_param:linux_system_repo_mcp_saltstack_url}/trusty/ trusty main"
+      saltstack_repo_xenial: "deb [arch=amd64] ${_param:linux_system_repo_mcp_saltstack_url}/xenial/ xenial main"

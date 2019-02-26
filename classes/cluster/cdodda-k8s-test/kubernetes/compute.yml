@@ -1,0 +1,9 @@
+classes:
+- cluster.cdodda-k8s-test.kubernetes.common
+- cluster.cdodda-k8s-test.kubernetes.networking.virtual
+- cluster.cdodda-k8s-test.infra
+parameters:
+  _param:
+    deploy_nic: eth0
+    primary_first_nic: eth1
+    primary_second_nic: eth2

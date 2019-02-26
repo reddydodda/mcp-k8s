@@ -1,0 +1,25 @@
+classes:
+- system.linux.system.repo.mcp.apt_mirantis.openstack
+- system.linux.system.repo.mcp.apt_mirantis.glusterfs
+- system.glusterfs.client.cluster
+- system.glusterfs.client.volume.salt_pki
+- system.nginx.server.single
+
+- system.salt.minion.cert.proxy
+- system.salt.minion.cert.proxy.pki
+- system.sphinx.server.doc.reclass
+- service.keepalived.cluster.single
+- cluster.cdodda-k8s-test.infra
+parameters:
+  _param:
+    keepalived_vip_interface: ens3
+    keepalived_vip_virtual_router_id: 240
+    nginx_proxy_ssl:
+      enabled: true
+      authority: ${_param:salt_minion_ca_authority}
+      engine: salt
+      mode: secure
+      key_file:  /srv/salt/pki/${_param:cluster_name}/${salt:minion:cert:proxy:common_name}.key
+      cert_file: /srv/salt/pki/${_param:cluster_name}/${salt:minion:cert:proxy:common_name}.crt
+      chain_file: /srv/salt/pki/${_param:cluster_name}/${salt:minion:cert:proxy:common_name}-with-chain.crt
+    cluster_vip_address: ${_param:kubernetes_proxy_address}

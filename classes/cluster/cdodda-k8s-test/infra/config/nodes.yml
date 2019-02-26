@@ -1,0 +1,42 @@
+parameters:
+  reclass:
+    storage:
+      data_source:
+        engine: local
+      node:
+        kubernetes_control_node01:
+          params:
+            tenant_address: ${_param:kubernetes_control_node01_tenant_address}
+        kubernetes_control_node02:
+          params:
+            tenant_address: ${_param:kubernetes_control_node02_tenant_address}
+        kubernetes_control_node03:
+          params:
+            tenant_address: ${_param:kubernetes_control_node03_tenant_address}
+        kubernetes_proxy_node01:
+          params:
+            linux_system_codename: xenial
+        kubernetes_proxy_node02:
+          params:
+            linux_system_codename: xenial
+        kubernetes_compute_rack01:
+          name: ${_param:kubernetes_compute_rack01_hostname}<<count>>
+          domain: ${_param:cluster_domain}
+          classes:
+          - cluster.${_param:cluster_name}.kubernetes.compute
+          repeat:
+            count: 2
+            ip_ranges:
+              single_address: 10.11.1.1-10.11.10.255
+              tenant_address: 10.12.1.1-10.12.10.255
+            start: 1
+            digits: 0
+            params:
+              single_address:
+                value: <<single_address>>
+              tenant_address:
+                value: <<tenant_address>>
+          params:
+            salt_master_host: ${_param:reclass_config_master}
+            linux_system_codename: xenial
+
