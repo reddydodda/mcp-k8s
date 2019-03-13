@@ -4,20 +4,21 @@ classes:
 - system.linux.system.single.debian
 - system.linux.network.dynamic_hosts
 - system.salt.minion.single
-- system.openssh.server.team.qa_scale
-- system.openssh.server.team.oscore_devops
-- system.openssh.server.team.networking
-- system.openssh.server.team.tcpcloud
-- system.openssh.server.team.stacklight
-- system.openssh.server.team.k8s_team
-- system.openssh.server.team.drivetrain
-- system.openssh.server.team.storage
+#- system.openssh.server.team.qa_scale
+#- system.openssh.server.team.oscore_devops
+#- system.openssh.server.team.networking
+#- system.openssh.server.team.tcpcloud
+#- system.openssh.server.team.stacklight
+#- system.openssh.server.team.k8s_team
+#- system.openssh.server.team.drivetrain
+#- system.openssh.server.team.storage
 - system.rsyslog.client.single
 - system.auditd.server.ciscat
 - cluster.cdodda-k8s-test.kubernetes
-#- cluster.cdodda-k8s-test.infra.proxy
+- cluster.cdodda-k8s-test.ceph
 - cluster.cdodda-k8s-test.infra.apt_repos
 - cluster.cdodda-k8s-test.infra.secrets
+- cluster.cdodda-k8s-test.infra.cdodda
 parameters:
   _param:
     # Don't set it "false" before you configure sudo policies and enable power users.

@@ -4,7 +4,6 @@ classes:
 - system.kubernetes.pool.cluster
 - system.salt.minion.cert.k8s_client
 - system.salt.minion.cert.etcd_client
-- system.linux.network.dynamic_hosts
 
 parameters:
   kubernetes:

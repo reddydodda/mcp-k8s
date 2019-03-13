@@ -10,15 +10,16 @@ classes:
 - cluster.cdodda-k8s-test.kubernetes.common
 - cluster.cdodda-k8s-test.kubernetes.networking.virtual
 - cluster.cdodda-k8s-test.infra
+- cluster.cdodda-k8s-test.ceph.rook
 parameters:
   _param:
-    deploy_nic: eth0
+    deploy_nic: ens4
     keepalived_k8s_apiserver_vip_address: ${_param:kubernetes_control_address}
     keepalived_k8s_apiserver_vip_interface: ens3
     keepalived_k8s_apiserver_vip_password: password
     keepalived_vip_virtual_router_id: 69
-    primary_first_nic: eth1
-    primary_second_nic: eth2
+    primary_first_nic: ens3
+    primary_second_nic: ens5
   etcd:
     server:
       setup:

@@ -13,11 +13,35 @@ parameters:
         kubernetes_control_node03:
           params:
             tenant_address: ${_param:kubernetes_control_node03_tenant_address}
-        kubernetes_proxy_node01:
+        ceph_mon_node01:
+          name: ${_param:kubernetes_ceph_mon01_hostname}
+          domain: ${_param:cluster_domain}
+          classes:
+          - cluster.${_param:cluster_name}.ceph.mon
           params:
+            salt_master_host: ${_param:reclass_config_master}
+            single_address: ${_param:kubernetes_ceph_mon01_address}
+            tenant_address: ${_param:kubernetes_ceph_mon01_tenant_address}
             linux_system_codename: xenial
-        kubernetes_proxy_node02:
+        ceph_mon_node02:
+          name: ${_param:kubernetes_ceph_mon02_hostname}
+          domain: ${_param:cluster_domain}
+          classes:
+          - cluster.${_param:cluster_name}.ceph.mon
           params:
+            salt_master_host: ${_param:reclass_config_master}
+            single_address: ${_param:kubernetes_ceph_mon02_address}
+            tenant_address: ${_param:kubernetes_ceph_mon02_tenant_address}
+            linux_system_codename: xenial
+        ceph_mon_node03:
+          name: ${_param:kubernetes_ceph_mon03_hostname}
+          domain: ${_param:cluster_domain}
+          classes:
+          - cluster.${_param:cluster_name}.ceph.mon
+          params:
+            salt_master_host: ${_param:reclass_config_master}
+            single_address: ${_param:kubernetes_ceph_mon03_address}
+            tenant_address: ${_param:kubernetes_ceph_mon03_tenant_address}
             linux_system_codename: xenial
         kubernetes_compute_rack01:
           name: ${_param:kubernetes_compute_rack01_hostname}<<count>>
@@ -31,6 +55,26 @@ parameters:
               tenant_address: 10.12.1.1-10.12.10.255
             start: 1
             digits: 0
+            params:
+              single_address:
+                value: <<single_address>>
+              tenant_address:
+                value: <<tenant_address>>
+          params:
+            salt_master_host: ${_param:reclass_config_master}
+            linux_system_codename: xenial
+        kubernetes_osd_rack01:
+          name: ${_param:kubernetes_osd_rack01_hostname}<<count>>
+          domain: ${_param:cluster_domain}
+          classes:
+          - cluster.${_param:cluster_name}.ceph.osd
+          repeat:
+            count: 3
+            ip_ranges:
+              single_address: 10.11.1.100-10.11.10.255
+              tenant_address: 10.12.1.100-10.12.10.255
+            start: 1
+            digits: 2
             params:
               single_address:
                 value: <<single_address>>

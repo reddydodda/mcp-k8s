@@ -31,12 +31,6 @@ parameters:
     kubernetes_control_node01_address: 10.11.0.11
     kubernetes_control_node02_address: 10.11.0.12
     kubernetes_control_node03_address: 10.11.0.13
-    kubernetes_proxy_hostname: prx
-    kubernetes_proxy_node01_hostname: prx01
-    kubernetes_proxy_node02_hostname: prx02
-    kubernetes_proxy_address: 172.17.10.80
-    kubernetes_proxy_node01_address: 172.17.10.81
-    kubernetes_proxy_node02_address: 172.17.10.82
     kubernetes_compute_rack01_hostname: cmp
     cluster_vip_address: ${_param:kubernetes_control_address}
     cluster_local_address: ${_param:single_address}
@@ -86,21 +80,6 @@ parameters:
         search:
           - ${_param:cluster_domain}
       host:
-        prx:
-          address: ${_param:kubernetes_proxy_address}
-          names:
-          - ${_param:kubernetes_proxy_hostname}
-          - ${_param:kubernetes_proxy_hostname}.${_param:cluster_domain}
-        prx01:
-          address: ${_param:kubernetes_proxy_node01_address}
-          names:
-          - ${_param:kubernetes_proxy_node01_hostname}
-          - ${_param:kubernetes_proxy_node01_hostname}.${_param:cluster_domain}
-        prx02:
-          address: ${_param:kubernetes_proxy_node02_address}
-          names:
-          - ${_param:kubernetes_proxy_node02_hostname}
-          - ${_param:kubernetes_proxy_node02_hostname}.${_param:cluster_domain}
         ctl:
           address: ${_param:kubernetes_control_address}
           names:

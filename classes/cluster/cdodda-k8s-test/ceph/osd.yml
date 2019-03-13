@@ -1,0 +1,10 @@
+classes:
+- system.linux.network.dynamic_hosts
+- cluster.cdodda-k8s-test.ceph.common
+- cluster.cdodda-k8s-test.infra
+- cluster.cdodda-k8s-test.ceph.networking.osd
+parameters:
+  _param:
+    deploy_nic: ens3
+    primary_first_nic: ens4
+    primary_second_nic: ens5

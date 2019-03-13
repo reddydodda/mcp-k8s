@@ -1,0 +1,14 @@
+classes:
+- cluster.cdodda-k8s-test.ceph.osd
+parameters:
+  _param:
+    linux_system_codename: xenial
+    salt_master_host: 10.10.0.15
+    single_address: 10.11.1.100
+    tenant_address: 10.12.1.100
+  linux:
+    system:
+      name: osd01
+      domain: cdodda-k8s-test.local
+      cluster: default
+      environment: prd

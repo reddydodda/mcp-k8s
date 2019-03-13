@@ -1,0 +1,79 @@
+parameters:
+  kubernetes:
+    master:
+## Node Labeling
+      label:
+        label01:
+          value: ceph-mon
+          node: mon01
+          enabled: true
+          key: role
+        label02:
+          value: ceph-mon
+          node: mon02
+          enabled: true
+          key: role
+        label03:
+          value: ceph-mon
+          node: mon03
+          enabled: true
+          key: role
+        label04:
+          value: ceph-osd
+          node: osd01
+          enabled: true
+          key: role
+        label05:
+          value: ceph-osd
+          node: osd02
+          enabled: true
+          key: role
+        label06:
+          value: ceph-osd
+          node: osd03
+          enabled: true
+          key: role
+## Rook Config
+    rook:
+      spec:
+        cephVersion:
+          # See tags available at https://hub.docker.com/r/ceph/ceph/tags/.
+          image: ceph/ceph:v12.2.11-20190201
+          allowUnsupported: false
+        dataDirHostPath: /var/lib/rook
+        dashboard:
+          enabled: true
+        network:
+          hostNetwork: true
+        rbdMirroring:
+          workers: 0
+        storage: # cluster level storage configuration and selection
+          useAllNodes: false
+          useAllDevices: false
+        config:
+          databaseSizeMB: "1024"
+          journalSizeMB: "1024"
+          osdsPerDevice: "1"
+        mon:
+          count: 1
+          allowMultiplePerNode: false
+          role: ceph-mon
+        osd:
+          osd01:
+            devices:
+            - vdc
+            - vdd
+            config:
+              storeType: bluestore
+          osd02:
+            devices:
+            - vdc
+            - vdd
+            config:
+              storeType: bluestore
+          osd03:
+            devices:
+            - vdc
+            - vdd
+            config:
+              storeType: bluestore
